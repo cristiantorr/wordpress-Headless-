@@ -1,11 +1,37 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import GameCard from "../components/GameCard.astro";
+import Layout from "../layouts/Layout.astro";
+import { getPageInfo, getPosts } from "../lib/wp";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const { title, content, seo } = await getPageInfo("bienvenidos-a-gametorr");
+const posts = await getPosts({ postType: "posts", posts_per_page: 10 });
 ---
 
-<Layout>
-	<Welcome />
+<Layout title={title} description={seo.description}>
+  <section>
+    <div class="container mx-auto text-center">
+      <h1 class="font-bold text-4xl mb-5">{title}</h1>
+      <div set:html={content} />
+    </div>
+  </section>
+  <section class="pb-30">
+    <div class="container mx-auto">
+      <h2 class="font-bold text-4xl">Artículos de wordpress</h2>
+      <div class="flex flex-col lg:flex-row justify-between gap-6 mt-5">
+        {
+          posts.map((post) => (
+            <GameCard
+              title={post.title}
+              excerpt={post.excerpt}
+              feacturedImage={post.feacturedImage}
+              content={post.content}
+              date={post.date}
+              slug={post.slug}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+  ;
 </Layout>

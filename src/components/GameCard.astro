@@ -1,0 +1,39 @@
+---
+interface Props {
+  title: string;
+  excerpt: string;
+  feacturedImage: string;
+  content: string;
+  date: string;
+  slug: string;
+}
+
+const { title, excerpt, feacturedImage, content, date, slug } = Astro.props;
+---
+
+<article
+  class="flex flex-col justify-between w-80 h-[600px] p-4 bg-white rounded-lg shadow-md"
+>
+  <div class="flex flex-col gap-2">
+    <figure class="flex justify-center bg-red-500">
+      <a href={`/post/${slug}`}>
+        <img
+          src={feacturedImage}
+          alt={title}
+          class="object-cover object-center w-full h-40 rounded-md"
+          loading="lazy"
+        />
+      </a>
+    </figure>
+    <h2 class="font-bold text-2xl">{title}</h2>
+    <p>{date}</p>
+    <p set:html={excerpt} />
+  </div>
+
+  <a
+    href={`/post/${slug}`}
+    class="bg-black hover:bg-black/60 text-white font-bold py-2 px-4 rounded-lg text-center"
+  >
+    Leer más
+  </a>
+</article>
